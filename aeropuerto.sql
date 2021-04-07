@@ -175,6 +175,52 @@ INSERT INTO horario (id_horario,fecha,hora) values(4,'2019/12/30','17:45 pm');
 
 SELECT * FROM horario;
 
+SELECT v.id_vuelo VUELO,  h.hora HORARIO
+FROM vuelo v	
+JOIN horario h ON v.horario = h.id_horario
+WHERE hour(h.hora) between 5 and 24;
+
+/*CONSULTA NO. 15*/
+SELECT v.id_vuelo VUELO, ao.pais ORIGEN, ad.pais DESTINO 
+from vuelo v
+JOIN aeropuerto ao ON ao.id_origen_destino = v.origen
+JOIN aeropuerto ad ON ad.id_origen_destino = v.destino
+where (ao.pais) != 'Costa Rica';
+
+SELECT *FROM datos_fabricante;
+ALTER TABLE datos_avion
+ADD COLUMN marca varchar (10);
+UPDATE datos_avion SET marca = 'BOEING' WHERE id_datos=2001;
+UPDATE datos_avion SET marca = 'HYUNDAI'  WHERE id_datos=2002;
+
+select * from datos_avion;
+
+SELECT da.matricula MATRICULA, da.marca MARCA, df.nombre FABRICANTE
+FROM datos_avion da 
+JOIN modelo_avion ma ON ma.id_modelo = da.no_modelo
+JOIN datos_fabricante df ON df.id_fabricante = ma.fabricante;
+
+SELECT *FROM AEROPUERTO;
+SELECT v.id_vuelo ID_VUELO, ao.pais ORIGEN, ad.pais DESTINO, da.marca MARCA_AVION
+FROM vuelo v
+JOIN aeropuerto ao ON ao.id_origen_destino = v.origen
+JOIN aeropuerto ad ON ad.id_origen_destino = v.destino
+JOIN avion a ON a.id_avion = v.avion
+JOIN datos_avion da ON da.id_datos = a.datos_avion
+WHERE (da.marca)!='BOEING';
+
+SELECT *FROM aeropuerto;
+SELECT v.id_vuelo ID_VUELO, ao.pais ORIGEN, ad.pais DESTINO, MIN(h.hora) HORA_SALIDA
+FROM vuelo v
+JOIN aeropuerto ao ON ao.id_origen_destino = v.origen
+JOIN aeropuerto ad ON ad.id_origen_destino = v.destino
+JOIN horario h ON  h.id_horario = v.horario 
+GROUP BY v.id_vuelo;
+
+
+
+
+
 
 
 
